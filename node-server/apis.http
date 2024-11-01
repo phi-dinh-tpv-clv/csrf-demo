@@ -1,0 +1,7 @@
+GET http://localhost:3000 HTTP/1.1
+
+### Set cookie
+GET http://localhost:3000/set-cookie HTTP/1.1
+
+### Get cookie
+GET http://localhost:3000/get-cookie HTTP/1.1
