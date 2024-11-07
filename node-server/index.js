@@ -1,35 +1,72 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const crypto = require("node:crypto");
+const cors = require("cors");
+const database = require("./database.json");
 
 const app = express();
 
-// Sử dụng cookie-parser để đọc cookie dễ dàng hơn thông qua req.cookies
-app.use(cookieParser());
+let token = "";
 
-// Tạo cookie mới
-app.get("/set-cookie", (req, res) => {
-  // Điều này tương tự như res.setHeader('Set-Cookie', 'username=John Doe; Max-Age=3600')
-  res.cookie("username", "John Doe", {
+app.use(express.json());
+app.use(cookieParser());
+// app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
+// login
+app.post("/login", (req, res) => {
+  token = crypto.randomBytes(32).toString("hex");
+
+  console.log("token", token);
+  res.cookie("token", token, {
     maxAge: 3600 * 1000,
     httpOnly: true,
-    secure: true,
+    // secure: false,
+    // sameSite: "None",
   });
-  res.send("Cookie đã được tạo");
+
+  res.json({
+    success: true,
+    token,
+  });
 });
 
-// Đọc cookie
-app.get("/get-cookie", (req, res) => {
-  const username = req.cookies.username;
-  res.send(`Cookie "username" có giá trị là: ${username}`);
+app.post("/change-password", (req, res) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    res.status(401).json({
+      success: false,
+      message: "Unauthorized",
+    });
+  }
+  res.status(200).json({
+    success: true,
+    message: "Change password successfully",
+  });
 });
 
-// home page
-app.get("/", (req, res) => {
-  res.send(
-    "Xin chào! Hãy tạo hoặc đọc cookie bằng cách truy cập /set-cookie hoặc /get-cookie"
-  );
+app.post("/add-post", (req, res) => {
+  console.log("-------------> ", req.body);
+  const { content } = req.body;
+  console.log("cokkieeeee", req.cookies);
+  database.push({
+    title: content ?? "",
+    id: database.length + 1,
+  });
+
+  res.json({
+    success: true,
+    message: "Post successfully",
+  });
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.get("/get-data", (req, res) => {
+  res.json({
+    success: true,
+    data: database,
+  });
+});
+
+app.listen(5001, () => {
+  console.log("Server is running on port 5001");
 });

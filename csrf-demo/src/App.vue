@@ -1,30 +1,39 @@
-<script setup>
-import HelloWorld from "./components/HelloWorld.vue";
-</script>
-
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
+    <h1>Hello App!</h1>
+    <p><strong>Current route path:</strong> {{ $route.fullPath }}</p>
 
-  <HelloWorld msg="Vite + Vue" />
+    <nav v-if="loggedIn" aria-label="Site menu">
+      <router-link to="/">Home Page</router-link>
+      <router-link to="/change-password">Change Password</router-link>
+      <a href="" @click="handleLogout">Logout</a>
+    </nav>
+
+    <nav v-else aria-label="Site menu">
+      <router-link to="/login">Login</router-link>
+    </nav>
+
+    <main>
+      <router-view :key="$route.fullPath" />
+    </main>
+  </div>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<script setup>
+import { onMounted, ref } from "vue";
+import router from "./router";
+
+const loggedIn = ref(false);
+
+onMounted(() => {
+  const { $cookies } = app.config.globalProperties;
+  console.log("_ga", $cookies.get("_ga"));
+  const token = Vue.$cookies.get("token");
+  console.log("token", token);
+  // const token = localStorage.getItem("token");
+});
+
+const handleLogout = () => {
+  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaa");
+};
+</script>
