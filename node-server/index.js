@@ -21,7 +21,7 @@ app.post("/login", (req, res) => {
     maxAge: 3600 * 1000,
     httpOnly: true,
     // secure: false,
-    // sameSite: "None",
+    sameSite: "none", // false, true, lax, none, strict
   });
 
   res.json({
