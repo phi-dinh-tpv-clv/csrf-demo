@@ -10,18 +10,31 @@ let token = "";
 
 app.use(express.json());
 app.use(cookieParser());
-// app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
+const whitelist = ["http://localhost:5173", "http://localhost:5001"];
+app.use(
+  cors({
+    credentials: true,
+    // allow cookies to be sent with requests
+    origin: (origin, callback) => {
+      if (whitelist.includes(origin)) {
+        return callback(null, true);
+      }
+      callback(new Error("Not allowed by CORS"));
+    },
+  })
+);
 
 // login
 app.post("/login", (req, res) => {
   token = crypto.randomBytes(32).toString("hex");
-
   console.log("token", token);
+
   res.cookie("token", token, {
-    maxAge: 3600 * 1000,
-    httpOnly: true,
-    // secure: false,
-    sameSite: "none", // false, true, lax, none, strict
+    maxAge: 3600 * 1000, // 1 hour expiration
+    // httpOnly: false, // Prevent access to the cookie from JavaScript
+    // secure: false, // Set to true if using HTTPS
+    // sameSite: "none", // false, true, lax, none, strict. Allow the cookie to be sent across different origins
   });
 
   res.json({
@@ -65,6 +78,17 @@ app.get("/get-data", (req, res) => {
     success: true,
     data: database,
   });
+});
+
+app.post("/logout", (req, res) => {
+  console.log("logout");
+  res.clearCookie("token", {
+    // httpOnly: true,
+    // secure: false, // Set to true if using HTTPS
+    // sameSite: "None",
+  });
+
+  res.json({ message: "Logged out successfully" });
 });
 
 app.listen(5001, () => {

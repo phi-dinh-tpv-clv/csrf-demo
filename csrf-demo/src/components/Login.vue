@@ -18,10 +18,13 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Login",
   setup() {
+    const router = useRouter();
+
     const email = ref("user123");
     const password = ref("abcd1234");
 
@@ -32,13 +35,14 @@ export default defineComponent({
       );
       const res = await fetch("http://localhost:5001/login", {
         method: "POST",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
-        // credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
       });
       const data = await res.json();
       console.log("res", data);
+      router.push("/");
     };
 
     return {

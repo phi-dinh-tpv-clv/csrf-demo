@@ -20,20 +20,44 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import router from "./router";
+import { onMounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 const loggedIn = ref(false);
+const route = useRoute();
+const router = useRouter();
+
+watch(
+  () => route.fullPath,
+  () => {
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("token="));
+
+    console.log("document.cookie", document.cookie);
+    console.log("loggedIn 12312312", token, loggedIn.value);
+
+    if (token) {
+      loggedIn.value = true;
+    }
+  }
+);
 
 onMounted(() => {
-  const { $cookies } = app.config.globalProperties;
-  console.log("_ga", $cookies.get("_ga"));
-  const token = Vue.$cookies.get("token");
-  console.log("token", token);
-  // const token = localStorage.getItem("token");
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="));
+  if (token) {
+    loggedIn.value = true;
+  } else {
+    router.push("/login");
+  }
 });
 
-const handleLogout = () => {
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaa");
+const handleLogout = async () => {
+  await fetch("http://localhost:5001/logout", {
+    method: "POST",
+    credentials: "include",
+  });
 };
 </script>
