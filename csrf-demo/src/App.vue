@@ -30,28 +30,24 @@ const router = useRouter();
 watch(
   () => route.fullPath,
   () => {
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="));
-
-    console.log("document.cookie", document.cookie);
-    console.log("loggedIn 12312312", token, loggedIn.value);
-
-    if (token) {
-      loggedIn.value = true;
-    }
+    authentication();
   }
 );
 
-onMounted(() => {
+function authentication() {
   const token = document.cookie
     .split("; ")
     .find((row) => row.startsWith("token="));
+
   if (token) {
     loggedIn.value = true;
   } else {
     router.push("/login");
   }
+}
+
+onMounted(() => {
+  authentication();
 });
 
 const handleLogout = async () => {

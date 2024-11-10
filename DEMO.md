@@ -16,6 +16,12 @@ Solution:
 
 - **Lax**: will sent cookie for GET request -> cause this is safety request as definition in 4.2.1 of RFC 7321
 
+_Prefer link_
+
+- https://betterprogramming.pub/handling-samesite-cookie-attacks-664184811e39
+- https://web.dev/samesite-cookies-explained/
+- https://jub0bs.com/posts/2021-01-29-great-samesite-confusion/
+
 2. Use `csrf_token`
 3. Use `CORS`
 

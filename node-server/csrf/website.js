@@ -37,21 +37,21 @@ const authMiddleware = (req, res, next) => {
 
 app.get("/login", (req, res) => {
   token = crypto.randomBytes(32).toString("hex");
-
   res.cookie("token", token, {
     maxAge: 3600 * 1000,
-    httpOnly: true,
-    // sameSite: true, // add this to prevent CSRF attacks
+    httpOnly: false, // prevent access to the cookie from JavaScript
+    // secure: true, // Set to true if using HTTPS
+    // sameSite: true, // false, true, lax, none, strict. Allow the cookie to be sent across different origins
   });
 
   const csrfToken = crypto.randomBytes(32).toString("hex");
   res.cookie("csrfToken", csrfToken);
 
   res.send(`
-  <h3>Logged in successfully!</h3>
-  <div>Back to <a href='/'>Homepage</a> to posts</div>
-  <br/>
-  <div>Logout <a href='/logout'>Logout</a></div>
+    <h3>Logged in successfully!</h3>
+    <div>Back to <a href='/'>Homepage</a> to posts</div>
+    <br/>
+    <div>Logout <a href='/logout'>Logout</a></div>
   `);
 });
 
