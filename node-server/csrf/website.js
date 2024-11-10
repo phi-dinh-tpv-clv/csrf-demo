@@ -39,9 +39,9 @@ app.get("/login", (req, res) => {
   token = crypto.randomBytes(32).toString("hex");
   res.cookie("token", token, {
     maxAge: 3600 * 1000,
-    httpOnly: false, // prevent access to the cookie from JavaScript
-    // secure: true, // Set to true if using HTTPS
-    // sameSite: true, // false, true, lax, none, strict. Allow the cookie to be sent across different origins
+    httpOnly: true, // prevent access to the cookie from JavaScript
+    secure: true, // Set to true if using HTTPS
+    sameSite: true, // false, true, lax, none, strict. Allow the cookie to be sent across different origins
   });
 
   const csrfToken = crypto.randomBytes(32).toString("hex");
