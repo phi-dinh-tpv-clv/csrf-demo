@@ -55,8 +55,7 @@ app.get("/login", (req, res) => {
   `);
 });
 
-// app.post("/submit-post", authMiddleware, csrfProtection, (req, res) => {
-app.post("/submit-post", authMiddleware, (req, res) => {
+app.post("/submit-post", authMiddleware, csrfProtection, (req, res) => {
   // add post into database
   const { content } = req.body;
   database.push(content);
