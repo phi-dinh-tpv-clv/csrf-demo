@@ -10,11 +10,11 @@ Solution:
 
 1. Use `sameSite: true`
 
-- **Strict**: will strict all the request. It mean all the request will not attach cookie if you sent from different site
+- **Strict**: sẽ không included cookie vào request từ bên thứ 3, có nghĩa là mọi request từ bên thứ 3 gửi vào website của chúng ta sẽ bị chặn, sử dụng thuộc tính này sẽ làm giảm hiệu năng người dùng từ trang website
 
-  > Example: you click a link to redirect to your facebook profile (not from facebook), you have to login again if facebook set `sameSite: strict`. This is because you access to facebook from another site, it will not sent along with cookie in the request
+  > Ví dụ: you click a link to redirect to your facebook profile (not from facebook), you have to login again if facebook set `sameSite: strict`. This is because you access to facebook from another site, it will not sent along with cookie in the request
 
-- **Lax**: will sent cookie for GET request -> cause this is safety request as definition in 4.2.1 of RFC 7321
+- **Lax**: cookie sẽ được gửi cùng với GET request đền từ bên thứ 3 (HEAD, OPTION ...) nhưng chủ yếu chúng ta dùng GET thôi, vì đây được gọi là request an toàn (RFC 7321)
 
 _Prefer link_
 
@@ -40,4 +40,4 @@ Conclusion:
   - Using `csrf_token`
   - Using `sameSite`, `httpOnly`, or `secure`
 
-- If your website don't using cookie, ignore this
+- Đặc biệt, nếu website chúng ta không sử dụng cookie ==> please ignore it

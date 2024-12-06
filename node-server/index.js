@@ -12,7 +12,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-const whitelist = ["http://localhost:5173", "http://localhost:5001"];
+const whitelist = [
+  "http://localhost:5173",
+  "http://localhost:5001",
+  // "http://localhost:5500",
+  // "http://127.0.0.1:5500",
+];
 app.use(
   cors({
     credentials: true,
@@ -35,7 +40,7 @@ app.post("/login", (req, res) => {
 
   res.cookie("token", token, {
     maxAge: 3600 * 1000, // 1 hour expiration
-    httpOnly: false, // prevent access to the cookie from JavaScript
+    // httpOnly: false, // prevent access to the cookie from JavaScript
     // secure: false, // Set to true if using HTTPS
     // sameSite: "none", // false, true, lax, none, strict. Allow the cookie to be sent across different origins
   });
